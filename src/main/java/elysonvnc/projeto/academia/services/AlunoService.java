@@ -25,9 +25,7 @@ public class AlunoService {
 
     public List<Aluno> buscandoAlunosPeloNome(String nome) {
         try {
-            List<Aluno> listaAlunos = alunoRepository.findByNomeContainingIgnoreCase(nome);
-            alterandoStatusAluno(listaAlunos);
-            return listaAlunos;
+            return alunoRepository.findByNomeContainingIgnoreCase(nome);
         }catch (ObjectNotFoundException e){
             throw new ObjectNotFoundException("Error: Aluno não encontrado, por favor verifique o nome e tente novamente.");
         }
@@ -46,9 +44,9 @@ public class AlunoService {
         double faturamento = 00.00;
         int qtdAlunos = 0;
 
-        for(int i=0; i<alunos.size(); i++){
-            qtdAlunos+=1;
-            if(alunos.get(i).getStatusAluno() == Status.ATIVO) faturamento+=alunos.get(i).getValorPlano().doubleValue();
+        for (Aluno aluno : alunos) {
+            qtdAlunos += 1;
+            if (aluno.getStatusAluno() == Status.ATIVO) faturamento += aluno.getValorPlano().doubleValue();
         }
 
         return new FaturamentoDto(qtdAlunos, faturamento);
